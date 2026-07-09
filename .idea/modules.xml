@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Abstract/Abstract.iml" filepath="$PROJECT_DIR$/Abstract/Abstract.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Praticeprogram.java/Praticeprogram.java.iml" filepath="$PROJECT_DIR$/Praticeprogram.java/Praticeprogram.java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Varags/Varags.iml" filepath="$PROJECT_DIR$/Varags/Varags.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Zohoround3/Zohoround3.iml" filepath="$PROJECT_DIR$/Zohoround3/Zohoround3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bus reservationuntitled1/bus reservationuntitled1.iml" filepath="$PROJECT_DIR$/bus reservationuntitled1/bus reservationuntitled1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/commandlineargumentdemo/commandlineargumentdemo.iml" filepath="$PROJECT_DIR$/commandlineargumentdemo/commandlineargumentdemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/file.iml" filepath="$PROJECT_DIR$/.idea/file.iml" />
+      <module fileurl="file://$PROJECT_DIR$/final/final.iml" filepath="$PROJECT_DIR$/final/final.iml" />
+      <module fileurl="file://$PROJECT_DIR$/inheritance/inheritance.iml" filepath="$PROJECT_DIR$/inheritance/inheritance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/leetcodeproblems.java/leetcodeproblems.java.iml" filepath="$PROJECT_DIR$/leetcodeproblems.java/leetcodeproblems.java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/marksheet/marksheet.iml" filepath="$PROJECT_DIR$/marksheet/marksheet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/protected/protected.iml" filepath="$PROJECT_DIR$/protected/protected.iml" />
+      <module fileurl="file://$PROJECT_DIR$/reservation.java/reservation.java.iml" filepath="$PROJECT_DIR$/reservation.java/reservation.java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/settwo/settwo.iml" filepath="$PROJECT_DIR$/settwo/settwo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/stack/stack.iml" filepath="$PROJECT_DIR$/stack/stack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/twoarray/twoarray.iml" filepath="$PROJECT_DIR$/twoarray/twoarray.iml" />
+      <module fileurl="file://$PROJECT_DIR$/untitled/untitled.iml" filepath="$PROJECT_DIR$/untitled/untitled.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zohoquestions/zohoquestions.iml" filepath="$PROJECT_DIR$/zohoquestions/zohoquestions.iml" />
+    </modules>
+  </component>
+</project>
