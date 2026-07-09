@@ -1,78 +1,125 @@
 package SmallPrograms;
 
-import java.util.Scanner;
+import java.util.*;
+import java.sql.*;
 
-class CGPACALACULATION {
+class CGPACALACULATION  {
     static Scanner sc =new Scanner(System.in);
     static int ch;
     static double gpacal=0.0;
-    private static void CgpaCal(){  //CGPA CALCULATIOM
+
+    static Connection con;
+
+    {
+        try {
+            String url="jdbc:mysql://localhost:3306/cgpa";
+            String username="root";
+            String password="svmr";
+            con = DriverManager.getConnection(url,username,password);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void CgpaCal(String name,String register_no) throws Exception {  //CGPA CALCULATION
         int sems;
         char st = 0;
-        double cgpa = 0.0,gpamark=0.0;
+        double cgpa = 0.0, gpamark = 0.0,cg;
         int i;
+        String sql;
         System.out.println("\nEnter your Semester");
-        sems =sc.nextInt();
-        for (i=1;i<=sems;i++) {
-            System.out.println("\nDo you know your semester - "+ i+" gpa(Y/N)");
+        sems = sc.nextInt();
+        for (i = 1; i <= sems; i++) {
+            System.out.println("\nDo you know your past semester - " + i + " gpa(Y/N)");
             st = sc.next().toUpperCase().charAt(0);
             if (st == 'Y') {
-                //cgpa+=gpamark;
-                System.out.println("Enter your semester -"+ i+" gpa");
-                gpamark=sc.nextDouble();
-                gpamark=markcon(i,gpamark);
-                cgpa+=gpamark;
-                gpamark=0.0;
+                String sq = "select *  from cgpa where register_no = ? ";
+                PreparedStatement rp = con.prepareStatement(sq);
+                rp.setString(1, register_no);
+                ResultSet rs = rp.executeQuery();
+                if (rs.next()) {
+                    sql = "update cgpa set cgpa = ?,stud_name = ? where register_no = ?";
+                } else {
+                    sql = "insert into cgpa (stud_name,register_no,cgpa) values(?,?,?) ";
+                }
+                PreparedStatement ps = con.prepareStatement(sql);
+                System.out.println("Enter your semester -" + i + " gpa");
+                gpamark = sc.nextDouble();
+                gpamark = markcon(i, gpamark);
+                cgpa += gpamark;
+                cg=Cgpa(i,cgpa);
+                ps.setString(1, name);
+                ps.setString(2, register_no);
+                ps.setDouble(3, cg);
+                ps.executeUpdate();
             } else if (st == 'N') {
-                gpamark= Semester(i);
-                cgpa+=gpamark;
-                gpamark=0.0;
+                String sq = "select *  from cgpa where register_no = ? ";
+                PreparedStatement rp = con.prepareStatement(sq);
+                rp.setString(1, register_no);
+                ResultSet rs = rp.executeQuery();
+                if (rs.next()) {
+                    sql = "update cgpa set cgpa = ?,stud_name = ? where register_no = ?";
+                } else {
+                    sql = "insert into cgpa (stud_name,register_no,cgpa) values(?,?,?) ";
+                }
+                PreparedStatement ps = con.prepareStatement(sql);
+                gpamark = Semester(i, name, register_no);
+                cgpa += gpamark;
+                cg=Cgpa(i,cgpa);
+                ps.setString(1, name);
+                ps.setString(2, register_no);
+                ps.setDouble(3, cg);
+                ps.executeUpdate();
             } else {
                 System.out.println("SORRY YOU ENTER A WRONG LETTER \n\n THANK YOU");
                 System.exit(0);
             }
         }
+    }
+    private static double Cgpa(int sems,double cgpa){
         switch (sems){
             case 1:{
+                cgpa/=22;
                 System.out.println("Your 1st semester gpa is your current cgpa"+cgpa);
-                break;
+                return cgpa;
             }
             case 2:{
                 cgpa/=48;
                 System.out.println("Your CGPA is :"+cgpa);
-                break;
+                return cgpa;
             }
             case 3:{
                 cgpa/=71;
                 System.out.println("Your CGPA is :"+cgpa);
-                break;
+                return cgpa;
             }
             case 4:{
                 cgpa/=93;
                 System.out.println("Your CGPA is :"+cgpa);
-                break;
+                return cgpa;
             }
             case 5:{
                 cgpa/=113;
                 System.out.println("Your CGPA is :"+cgpa);
-                break;
+                return cgpa;
             }
             case 6:{
                 cgpa/=136;
                 System.out.println("Your CGPA is :"+cgpa);
-                break;
+                return cgpa;
             }
             case 7:{
                 cgpa/=152;
                 System.out.println("Your CGPA is :"+cgpa);
-                break;
+                return cgpa;
             }
             case 8:{
                 cgpa/=162;
                 System.out.println("Your CGPA is :"+cgpa);
-                break;
+                return cgpa;
             }
         }
+        return cgpa;
     }
     private static double markcon(int i,double gpamark){  //CONVERSATION FROM GPA TO MARK
         switch (i){
@@ -111,9 +158,10 @@ class CGPACALACULATION {
         }
         return 1.0;
     }
-    private static void GpaCal(double semgpa,int totcre,int s){ //GPA CALCULATION
+    private static double GpaCal(double semgpa,int totcre,int s){ //GPA CALCULATION
         semgpa=semgpa/totcre;
         System.out.println("Your semester -" + s +" gpa is " + semgpa);
+        return semgpa;
     }
 
     private static double assignvalue(double cre){  //ASSIGN GRADE MARK
@@ -160,12 +208,12 @@ class CGPACALACULATION {
         gpacal+=mark;
         return gpacal;
     }
-    private static double Semester(int s){
-        double firstsem;
+    private static double Semester(int s,String name,String register_no) throws Exception {
+        double firstsem,g;
         if(s==0) {
             System.out.println("\nEnter your semester");
             s = sc.nextInt();
-            Semester(s);
+            Semester(s,name,register_no);
         }
         else{
             switch (s) {
@@ -189,7 +237,8 @@ class CGPACALACULATION {
                     assignvalue(2.0);
                     System.out.println("Enter your English Laboratory Grade (BS3171)");
                     firstsem = assignvalue(1.0);
-                    GpaCal(firstsem, 22,s);
+                    g=GpaCal(firstsem, 22,s);
+                    connection("first_sem",name,register_no,g);
                     return firstsem;
                 }
                 case 2: {
@@ -214,7 +263,8 @@ class CGPACALACULATION {
                     assignvalue(2.0);
                     System.out.println("Enter your Communication Laboratory/Foreign Laboratory Grade (GE3272)");
                     firstsem = assignvalue(2.0);
-                    GpaCal(firstsem, 26,s);
+                    g=GpaCal(firstsem, 26,s);
+                    connection("second_sem",name,register_no,g);
                     return firstsem;
                 }
                 case 3: {
@@ -237,7 +287,8 @@ class CGPACALACULATION {
                     assignvalue(2.0);
                     System.out.println("Enter your Object Oriented And Programming Laboratory Grade (CS3361)");
                     firstsem = assignvalue(1.5);
-                    GpaCal(firstsem, 23,s);
+                    g=GpaCal(firstsem, 23,s);
+                    connection("third_sem",name,register_no,g);
                     return firstsem;
                 }
                 case 4: {
@@ -258,7 +309,8 @@ class CGPACALACULATION {
                     assignvalue(1.5);
                     System.out.println("Enter your DataBase Management System Laboratory Grade (CS3481)");
                     firstsem=assignvalue(1.5);
-                    GpaCal(firstsem, 22,s);
+                    g=GpaCal(firstsem, 22,s);
+                    connection("fourth_sem",name,register_no,g);
                     return firstsem;
                 }
                 case 5:{
@@ -275,7 +327,8 @@ class CGPACALACULATION {
                     assignvalue(3.0);
                     System.out.println("Enter your Professional Elective-II Grade ");
                     firstsem=assignvalue(3.0);
-                    GpaCal(firstsem, 20,s);
+                    g=GpaCal(firstsem, 20,s);
+                    connection("fivith_sem",name,register_no,g);
                     return firstsem;
                 }
                 case 6:{
@@ -294,7 +347,8 @@ class CGPACALACULATION {
                     assignvalue(3.0);
                     System.out.println("Enter your Professional Elective-VI Grade ");
                     firstsem=assignvalue(3.0);
-                    GpaCal(firstsem, 23,s);
+                    g=GpaCal(firstsem, 23,s);
+                    connection("sixth_sem",name,register_no,g);
                     return firstsem;
                 }
                 case 7:{
@@ -311,34 +365,64 @@ class CGPACALACULATION {
                     assignvalue(3.0);
                     System.out.println("Enter your Summer Internship Grade ");
                     firstsem=assignvalue(2.0);
-                    GpaCal(firstsem, 16,s);
+                    g=GpaCal(firstsem, 16,s);
+                    connection("seventh_sem",name,register_no,g);
                     return firstsem;
                 }
                 case 8:{
                     gpacal=0.0;
                     System.out.println("Enter your Project Work / Internship Grade ");
                     firstsem=assignvalue(10.0);
-                    GpaCal(firstsem, 10,s);
+                    g=GpaCal(firstsem, 10,s);
+                    connection("eigth_sem",name,register_no,g);
                     return firstsem;
                 }
             }
         }
         return 1.0;
     }
-    private static void calculate(){ // CALCULATION STARTS
-        System.out.println("============\n\tMENU\n============\n\t1.GPA\n\t2.CGPA");
+    private static void connection (String columnname,String name,String register_no,double g) throws Exception{
+        String sq ="select *  from gpa where register_no = ? ";
+        PreparedStatement rp = con.prepareStatement(sq);
+        rp.setString(1,register_no);
+        ResultSet rs =rp.executeQuery();
+        if(rs.next()){
+            String sql="update gpa set "+columnname+" = ?,stud_name= ? where register_no = ?";
+            PreparedStatement ps =con.prepareStatement(sql);
+            ps.setDouble(1,g);
+            ps.setString(2,name);
+            ps.setString(3,register_no);
+            ps.executeUpdate();
+        }else{
+            String sql ="insert into gpa (stud_name,register_no,"+columnname+") values(?,?,?) ";
+            PreparedStatement ps =con.prepareStatement(sql);
+            ps.setString(1,name);
+            ps.setString(2,register_no);
+            ps.setDouble(3,g);
+            ps.executeUpdate();
+        }
+    }
+        private void calculate() throws Exception{ // CALCULATION STARTS
+        System.out.println("Enter your name:");
+        String name= sc.nextLine();
+        System.out.println("Enter your Register No:");
+        String register_no= sc.nextLine();
+        System.out.println("============\n\tMENU\n\n\t1.GPA\n\t2.CGPA\n============");
         System.out.println("\nEnter your choice to Calculate:");
         ch= sc.nextInt();
         if(ch==1){
-            Semester(0);
+            Semester(0,name,register_no);
         }
         else if (ch==2) {
-            CgpaCal();
+            CgpaCal(name,register_no);
         }
         else {
             System.out.println("Please enter a valid choice");
         }
     }
-    public static void main(String args[]){CGPACALACULATION.calculate();
+    public static void main(String args[]) throws Exception{
+        CGPACALACULATION cp = new CGPACALACULATION();
+        cp.calculate();
+
     }
 }
